@@ -1,0 +1,15 @@
+{
+  "name": "email_domain_verify",
+  "version": "1.0.0",
+  "description": "Email Domain Verifier Project",
+  "main": "app.js",
+  "scripts": {
+    "dev":"nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jasmyne Jean-Remy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
