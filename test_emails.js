@@ -9,14 +9,12 @@ let emails = []
 rl.on("line",(row)=> {
     const full_line = row.split(",")
     emails.push(full_line[1])
+    verify_controller.validateEmail(full_line[1]).then((res)=> {
+        if(!res){
+            console.log(`${full_line[1]}`)
+        }
+        
+     })
+     .catch(err => console.log(err))
 })
 
-rl.on("close",() =>{
-    console.log(emails)
-})
-
-async function testEmail(email){
-    let isValid = await verify_controller.check_email_easy(email)["valid"]
-    console.log(`${email}: ${isValid}`)
-}
-testEmail("none@gmail.com")
