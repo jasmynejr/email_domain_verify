@@ -1,8 +1,8 @@
 const validator = require("deep-email-validator")
-const { exec,spawn } = require('node:child_process')
+const { exec,spawn,spawnSync } = require('node:child_process')
 
 let checkedDomains = new Map()
-checkedDomains.set("gmail.com",true)
+
 
 // easy, straight forward way for checking email -- can be slow
 async function check_email_easy(email){
@@ -57,50 +57,41 @@ async function getMxServer(domain){
 }
 
 function pingServer(server) {
+    const pingServerSync = spawnSync('ping',[server], {
+        timeout:1000
+    })
     
-    
-
-
-    return new Promise((resolve,reject) => {
-        try {
-            const pingRequest =  spawn("ping",[server])
-            let pinged = true
-            var start = new Date().getTime();
-            pingRequest.stdout.on("data",data => {
-            let out = data.toString()
-            console.log(out)
-            if(out.substring(0,3) === "Req"){
-                pinged = false;
-                console.log(`line 76 ${pinged}`)
-                pingRequest.kill()
-                resolve(pinged)
-            }
-            
-        })
-        
-        }
-        catch(e) {
-            reject(e)
-        }
-     })
-  
+    const output = pingServerSync.stdout.toString().split("\n")
+    if(output.length > 3){
+        return true;
+    }
+    else{
+        return false;
+    }
  }
 
 async function validateEmail(email){
     
     let domain = email.split('@')[1]
 
-    if(checkedDomains.has(domain)){
-        return checkedDomains.get(domain)
-    }
-
+    
     let server = await getMxServer(domain)
 
     if(server==="none"){
+       
         return false
     }
+    if(pingServer(server)){     
+
+        return true
+    }
+    else{
+
+
+        return false
+    }
+   
     
-    return true
     
 }
 module.exports = {check_email_easy,validateEmail}

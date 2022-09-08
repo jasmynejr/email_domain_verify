@@ -4,17 +4,32 @@ const stream = fs.createReadStream('./spammer_email_sample.csv')
 const rl = readline.createInterface({ input: stream });
 
 const verify_controller = require("./verfication")
-let emails = []
-
+let domains = new Map()
+let emails  = []
+let good_emails = []
+let spam_emails = []
 rl.on("line",(row)=> {
-    const full_line = row.split(",")
-    emails.push(full_line[1])
-    verify_controller.validateEmail(full_line[1]).then((res)=> {
-        if(!res){
-            console.log(`${full_line[1]}`)
+    const email = row.split(",")[1]
+    emails.push(email)
+    
+})
+
+rl.on("close",()=> {
+    validateAllEmails().then(() => {console.log("validating..")}).catch((e)=> {console.log(e)})
+})
+
+async function validateAllEmails(){
+    console.log("trying to validate emails")
+    for (let i = 0; i < emails.length; i++){
+        
+        const email = emails[i]
+        const domain = email.split('@')[1]
+        if(!domains.has(domain)){
+            const valid = await verify_controller.validateEmail(email)    
+            domains.set(domain,valid)
         }
         
-     })
-     .catch(err => console.log(err))
-})
+    }
+
+}
 

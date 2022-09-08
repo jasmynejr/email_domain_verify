@@ -18,9 +18,15 @@ app.get('/',(req,res)=> {
 })
 
 
-app.post('/verify',(req,res)=> {
-    verify_controller.check_email_easy(req.body.email)
-    res.send(req.body.domain)
+app.post('/verify',async (req,res)=> {
+    try {
+        console.log(req)
+        let isValid = await verify_controller.validateEmail(req.body.email)
+        res.json({valid:isValid})
+    }
+    catch(e){
+        res.send(e)
+    }
 })
 app.listen(port, ()=> {
     console.log(`App listening on port ${port}`)
