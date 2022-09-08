@@ -15,6 +15,12 @@ async function check_email_easy(email){
     return res;
 }
 
+/**
+ * 
+ * @param {*} domain 
+ * @returns the result of seraching the name servers for the given domain
+ * @desc searches MX servers for the domain 
+ */
 function lookupMxServers(domain){
     
     return new Promise((resolve,reject)=> {
@@ -27,7 +33,11 @@ function lookupMxServers(domain){
     })
 }
 
-
+/**
+ * 
+ * @param {*} domain 
+ * @returns Either no server or the MX server with the highest preference 
+ */
 async function getMxServer(domain){
     let mxOutput = await lookupMxServers(domain)
     let outputs = mxOutput.split("\n").splice(3)
@@ -56,6 +66,12 @@ async function getMxServer(domain){
     
 }
 
+/**
+ * Pings MX server to see if it is active or not
+ * Times out after 1000 ms 
+ * @param {*} server 
+ * @returns boolean 
+ */
 function pingServer(server) {
     const pingServerSync = spawnSync('ping',[server], {
         timeout:1000
@@ -70,6 +86,12 @@ function pingServer(server) {
     }
  }
 
+
+ /**
+  * Checks to see if email is valid or not
+  * @param {*} email 
+  * @returns booleans
+  */
 async function validateEmail(email){
     
     let domain = email.split('@')[1]
