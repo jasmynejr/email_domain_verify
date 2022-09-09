@@ -28,6 +28,12 @@ async function validateAllEmails(){
             const valid = await verify_controller.validateEmail(email)    
             domains.set(domain,valid)
         }
+
+        fs.appendFile('email_valid_results.txt',`${email}:${domains.get(domain)}\n`,(err)=> {
+            if(err){
+                console.log(err)
+            }
+        })
         
     }
 

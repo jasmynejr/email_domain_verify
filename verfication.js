@@ -1,6 +1,6 @@
 const validator = require("deep-email-validator")
-const { exec,spawn,spawnSync } = require('node:child_process')
-
+const { exec,spawnSync } = require('node:child_process')
+const fs = require("fs");
 let checkedDomains = new Map()
 
 
@@ -38,11 +38,14 @@ function lookupMxServers(domain){
  * @param {*} domain 
  * @returns Either no server or the MX server with the highest preference 
  */
+
+//export the other mx servers
 async function getMxServer(domain){
     let mxOutput = await lookupMxServers(domain)
     let outputs = mxOutput.split("\n").splice(3)
     let highestPrefServer = ""
     let highestPref = 100
+    let allServers = []
     if (outputs[0] === ''){
         return "none"
     }
@@ -55,6 +58,7 @@ async function getMxServer(domain){
         for(let j = 0;j<tabSplit.length;j++){
           let prefsAndMxs = tabSplit[j].split("=")
           let curPref = prefsAndMxs[1].split(',')[0].trim()
+          allServers.push(prefsAndMxs[2].trim())
           if(parseInt(curPref) < highestPref) {
             highestPref = curPref
             highestPrefServer = prefsAndMxs[2].trim()
@@ -62,7 +66,7 @@ async function getMxServer(domain){
         }
     }
 
-    return highestPrefServer
+    return [highestPrefServer,allServers]
     
 }
 
@@ -93,12 +97,16 @@ function pingServer(server) {
   * @returns booleans
   */
 async function validateEmail(email){
-    
+   
     let domain = email.split('@')[1]
-
+    let mxServers =  await getMxServer(domain)
     
-    let server = await getMxServer(domain)
-
+    let server = mxServers[0]
+    fs.appendFile("mxServers.txt",`${domain}: ${mxServers}\n`,(err)=>{
+        if(err){
+            console.log(err)
+        }
+    })
     if(server==="none"){
        
         return false
