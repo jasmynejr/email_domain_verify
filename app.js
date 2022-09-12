@@ -20,7 +20,6 @@ app.get('/',(req,res)=> {
 
 app.post('/verify',async (req,res)=> {
     try {
-        console.log(req)
         let isValid = await verify_controller.validateEmail(req.body.email)
         res.json({valid:isValid})
     }

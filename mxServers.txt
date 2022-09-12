@@ -1166,3 +1166,6 @@ psu.edu: psu-edu.mail.protection.outlook.com,tr16g04.aset.psu.edu,psu-edu.mail.p
 hargray.com: mx1c28.carrierzone.com,mx3c28.carrierzone.com,mx2c28.carrierzone.com,mx1c28.carrierzone.com,mx4c28.carrierzone.com
 fieldstoneprop.com: mx1-us1.ppe-hosted.com,mx1-us1.ppe-hosted.com,mx2-us1.ppe-hosted.com
 buffalo.edu: buffalo-edu.mail.protection.outlook.com,buffalo-edu.mail.protection.outlook.com
+jas.gmail.com: none
+gmail.com: gmail-smtp-in.l.google.com,alt1.gmail-smtp-in.l.google.com,alt4.gmail-smtp-in.l.google.com,alt2.gmail-smtp-in.l.google.com,alt3.gmail-smtp-in.l.google.com,gmail-smtp-in.l.google.com
+outlook.com: outlook-com.olc.protection.outlook.com,outlook-com.olc.protection.outlook.com

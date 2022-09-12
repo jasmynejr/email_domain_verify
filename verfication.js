@@ -132,4 +132,6 @@ async function validateEmail(email){
     
     
 }
+
+
 module.exports = {check_email_easy,validateEmail}
