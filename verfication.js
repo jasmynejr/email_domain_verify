@@ -58,6 +58,14 @@ async function getMxServer(domain){
         for(let j = 0;j<tabSplit.length;j++){
           let prefsAndMxs = tabSplit[j].split("=")
           let curPref = prefsAndMxs[1].split(',')[0].trim()
+          fs.appendFile('server.txt',`${prefsAndMxs[2]}`,(err)=> {
+                if(err){
+                    console.log(err)
+                }
+          })
+          if(prefsAndMxs[2] === undefined){
+            return "none"
+          }
           allServers.push(prefsAndMxs[2].trim())
           if(parseInt(curPref) < highestPref) {
             highestPref = curPref

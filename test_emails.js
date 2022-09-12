@@ -1,6 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
-const stream = fs.createReadStream('./spammer_email_sample.csv')
+const stream = fs.createReadStream('./spammer_email_count.csv')
 const rl = readline.createInterface({ input: stream });
 
 const verify_controller = require("./verfication")
